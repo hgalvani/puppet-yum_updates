@@ -22,6 +22,7 @@ Facter.add(:yum_updates) do
     # that there are outstanding updates.  Otherwise set it to false.
     if results['count'] > 0
       results['available'] = true
+      results['list_package'] = Facter::Core::Execution.execute('yum check-update --quiet | grep -v "^$" | tr -s \' \'| cut -d \' \' -f1,2', :timeout => 30)
     else
       results['available'] = false
     end
